@@ -2,7 +2,6 @@ package ru.bestfoxy.hashtable;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class HashTable {
 
