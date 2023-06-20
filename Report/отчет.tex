@@ -1,0 +1,159 @@
+%% -*- coding: utf-8 -*-
+\documentclass[12pt,a4paper]{scrartcl} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\begin{document}
+	\begin{titlepage}
+		\begin{center}
+			\large
+			МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ
+			
+			Федеральное государственное бюджетное образовательное учреждение высшего образования
+			
+			\textbf{АДЫГЕЙСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ}
+			\vspace{0.25cm}
+			
+			Инженерно-физический факультет
+			
+			Кафедра автоматизированных систем обработки информации и управления
+			\vfill
+			
+			\vfill
+			
+			\textsc{Отчет по практике}\\[5mm]
+			
+			{\LARGE Программаная реализация Хеш-таблицы \textit}
+			\bigskip
+			
+			2 курс, группа 2УТС
+		\end{center}
+		\vfill
+		
+		\newlength{\ML}
+		\settowidth{\ML}{«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}}}
+		\hfill\begin{minipage}{0.5\textwidth}
+			Выполнил:\\
+			\underline{\hspace{\ML}} А.\,А.~Ашла\\
+			«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}} 2023 г.
+		\end{minipage}%
+		\bigskip
+		
+		\hfill\begin{minipage}{0.5\textwidth}
+			Руководитель:\\
+			\underline{\hspace{\ML}} С.\,В.~Теплоухов\\
+			«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}} 2023 г.
+		\end{minipage}%
+		\vfill
+		
+		\begin{center}
+			Майкоп, 2023 г.
+		\end{center}
+	\end{titlepage}
+	
+	\section{Введение}
+	\label{sec:intro}
+	
+	% Что должно быть во введении
+	\begin{enumerate}
+		\item Текстовая формулировка задачи
+		\item Пример кода, решающего данную задачу
+		\item График
+		\item Скриншот программы
+	\end{enumerate}
+	
+	Пример приведен в пункте ~\ref{sec:exp} на стр.~\pageref{sec:exp}.
+	
+	\section{Ход работы}
+	\label{sec:exp}
+	
+	\subsection{Код приложения}
+	\label{sec:exp:code}
+	\begin{verbatim}
+		public static void main(String[] args) {
+			HashTable hashTable = new HashTable(8);
+			
+			//ВСТАВКА ЭЛЕМЕНТОВ
+			hashTable.insert(11);
+			hashTable.insert(5);
+			hashTable.insert(15);
+			hashTable.insert(20);
+			hashTable.insert(2);
+			
+			//ДЕБАЖИМ ТЕКУЩУЙ ХЭШ
+			hashTable.printTable();
+			
+			//ПРОВЕРЯЕМ НАЛИЧИЕ
+			System.out.println("Search 15: " + hashTable.search(15));
+			System.out.println("Search 7: " + hashTable.search(7));
+			
+			//УДАЛЯЕМ ЭЛЕМЕНТЫ
+			hashTable.delete(15);
+			hashTable.delete(7);
+			
+			//ДЕБАЖИМ ТЕКУЩУЙ ХЭШ
+			hashTable.printTable();
+		}
+		
+		public class HashTable {
+			
+			//РАЗМЕР ТАБЛИЦЫ
+			private final int size;
+			//СПИСКИ
+			private final LinkedList<Integer>[] table;
+			
+			public HashTable(int size) {
+				this.size = size;
+				this.table = new LinkedList[size];
+				//ИНИЦИЛИЗИРУЕМ КАЖДЫЙ ЭЛЕМЕНТ МАССИВА
+				Arrays.fill(table, new LinkedList<>());
+			}
+			
+			/* ПОЛУЧАЕМ ИНДЕКС В МАССИВЕ */
+			private int hash(int key) {
+				return key % size;
+			}
+			
+			/* ВСТАВКА ЭЛЕМЕНТА */
+			public void insert(int key) {
+				//ПОЛУЧАЕМ ИНДЕКС В МАССИВЕ
+				int index = hash(key);
+				//СПИСОК ПОД ЭТОТ ИНДЕКТ
+				LinkedList<Integer> list = table[index];
+				if(!list.contains(key)) {
+					list.add(key);
+				}
+			}
+			
+			/* ПОИСК В ТАБЛИЦЕ */
+			public boolean search(int key) {
+				int index = hash(key);
+				LinkedList<Integer> list = table[index];
+				return list.contains(key);
+			}
+			
+			/* УДАЛЕНИЕ ЭЛЕМЕНТА В ТАБЛИЦЕ */
+			public void delete(int key) {
+				int index = hash(key);
+				LinkedList<Integer> list = table[index];
+				//УДАЛЯЕМ ПЕРВЫЙ ЭЛЕМЕНТ В КОЛЛЕКЦИИ
+				list.removeFirstOccurrence(key);
+			}
+			
+			public void printTable() {
+				for(int i = 0; i < size; i++) {
+					LinkedList<Integer> list = table[i];
+					System.out.print("Index " + i + ": ");
+					for(int number : list) {
+						System.out.print(number + " ");
+					}
+					System.out.println();
+				}
+			}
+		}
+		
+	\end{verbatim}
+\end{document}
